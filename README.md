@@ -1,4 +1,4 @@
-# Example with CDI and @Transactional annotation
+# Example with Docker, CDI and @Transactional annotation
 Complete example with a CDI and transactional resource.
 
 You can test this example as follow:
