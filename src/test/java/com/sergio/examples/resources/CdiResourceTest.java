@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -94,7 +95,8 @@ public class CdiResourceTest {
 
     @Test
     public void getAll() {
-        resource.getAll();
+        JsonArray all = resource.getAll();
+        assertFalse(all.isEmpty());
     }
 
     @Test

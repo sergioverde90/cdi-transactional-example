@@ -61,11 +61,11 @@ public class CdiResource {
 
     private JsonArray toJSON(List<CdiEntity> all) {
         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
-        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
         for (CdiEntity cdiEntity : all) {
-            arrBuilder.add(objBuilder);
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
             objBuilder.add("id", cdiEntity.getId());
             objBuilder.add("name", cdiEntity.getName());
+            arrBuilder.add(objBuilder.build());
         }
         return arrBuilder.build();
     }
