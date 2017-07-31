@@ -10,13 +10,16 @@ import org.junit.Test;
 import javax.enterprise.event.Event;
 import javax.enterprise.util.TypeLiteral;
 import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.lang.annotation.Annotation;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Sergio on 18/05/2017.
@@ -92,6 +95,17 @@ public class CdiResourceTest {
     @Test
     public void getAll() {
         resource.getAll();
+    }
+
+    @Test
+    public void findById() {
+        JsonObject found = resource.byId(1L);
+        assertNotNull(found);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void findByIdNotFound() {
+        resource.byId(-1L);
     }
 
 }

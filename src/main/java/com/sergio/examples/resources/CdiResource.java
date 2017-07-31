@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import javax.json.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.StringReader;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Sergio on 26/02/2017.
@@ -43,8 +43,20 @@ public class CdiResource {
         return toJSON(all);
     }
 
+    @GET
+    @Path("byId/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject byId(@PathParam("id") Long id) {
+        CdiEntity found = control.findById(id);
+        if(null == found) throw new NoSuchElementException("entity not found with id "+id);
+        return toJSON(found);
+    }
+
     private JsonObject toJSON(CdiEntity entity) {
-        return Json.createReader(new StringReader(entity.toString())).readObject();
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        builder.add("id", entity.getId());
+        builder.add("name", entity.getName());
+        return builder.build();
     }
 
     private JsonArray toJSON(List<CdiEntity> all) {
