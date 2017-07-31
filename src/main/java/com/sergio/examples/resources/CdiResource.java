@@ -4,13 +4,11 @@ import com.sergio.examples.control.CdiControl;
 import com.sergio.examples.entity.CdiEntity;
 
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.json.*;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.StringReader;
+import java.util.List;
 
 /**
  * Created by Sergio on 26/02/2017.
@@ -28,12 +26,35 @@ public class CdiResource {
         this.control = cdiControl;
     }
 
-    @GET
+    @PUT
     @Path("tx")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject tx(){
-        CdiEntity entity = new CdiEntity(1L, "entity");
-        control.tx(entity);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public JsonObject tx(CdiEntity entity){
+        CdiEntity persisted = control.tx(entity);
+        return toJSON(persisted);
+    }
+
+    @GET
+    @Path("all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonArray getAll() {
+        List<CdiEntity> all = control.getAll();
+        return toJSON(all);
+    }
+
+    private JsonObject toJSON(CdiEntity entity) {
         return Json.createReader(new StringReader(entity.toString())).readObject();
+    }
+
+    private JsonArray toJSON(List<CdiEntity> all) {
+        JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+        for (CdiEntity cdiEntity : all) {
+            arrBuilder.add(objBuilder);
+            objBuilder.add("id", cdiEntity.getId());
+            objBuilder.add("name", cdiEntity.getName());
+        }
+        return arrBuilder.build();
     }
 }

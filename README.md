@@ -16,5 +16,5 @@ docker run -d --name cdi -p 8080:8080 wildfly-cdi
 ```
 * test the example
 ```bash
-curl -i http://localhost:8080/cdi-transactional/resources/cdi/tx
+curl -XPUT -H "Content-Type: application/json" -d '{"id":1,"name":"name1"}' http://localhost:8080/cdi-transactional/resources/cdi/tx
 ```
