@@ -21,6 +21,13 @@ public class CdiResource {
     @Inject
     CdiControl control;
 
+    public CdiResource() {/* default constructor */}
+
+    @Inject
+    public CdiResource(CdiControl cdiControl) {
+        this.control = cdiControl;
+    }
+
     @GET
     @Path("tx")
     @Produces(MediaType.APPLICATION_JSON)

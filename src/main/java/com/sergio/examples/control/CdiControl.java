@@ -7,7 +7,6 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.event.TransactionPhase;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 /**
@@ -15,11 +14,15 @@ import javax.transaction.Transactional;
  */
 public class CdiControl {
 
-    @PersistenceContext(unitName = "tx-cdi")
     EntityManager em;
 
-    @Inject
     Event<CdiEntity> entityEvent;
+
+    @Inject
+    public CdiControl(Event<CdiEntity> entityEvent, EntityManager em) {
+        this.entityEvent = entityEvent;
+        this.em = em;
+    }
 
     /**
      * mark method as {@link Transactional} to create a transaction.
